@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
-<title>	popinaのサイトです</title>
+<title>ホームページサンプル株式会社のサイトです</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <link rel="stylesheet" href="style.css" type="text/css" media="screen">
@@ -15,7 +15,7 @@
 <script src="js/script.js"></script>
 </head>
 
-<body>
+<body id="subpage">
 
 <header id="header">
 	<h1>ぽぴーな</h1>
@@ -27,36 +27,42 @@
 </header>
 
 <div id="wrapper">
-	<!-- 3カラム -->
-	<section class="gridWrapper">
-		<article class="grid">
-			<div class="box">
-				<!--登録サイトを埋め込む-->
-				<p class="readmore"><a href="user_input.html"><img src="images/top_m1.jpg" width="290" height="290" alt=""></a></p>
-				<h3>登録はこちらから</h3>
-				<p>登録すると便利な機能が使用できます。</p>
-			</div>
-		</article>
-		<article class="grid">
-			<div class="box">
-				<p class="readmore"><a href="subpage.html"><img src="images/top_m2.jpg" width="290" height="290" alt=""></a></p>
-				<h3>お客様 ページ</h3> 
-				<p>登録されている店舗のHPが確認できます。スタンプの確認もできます。</p>
-			</div>
-		</article>
-		<article class="grid">
-			<div class="box">
-				<!--お店サイドの情報-->
-				<p class="readmore"><a href="subpage.html"><img src="images/top_m3.jpg" width="290" height="290" alt=""></a></p>
-				<h3>お店側　ページ</h3>
-				<p>お客様数のカウント機能が使えます</p>
-			</div>
-		</article>
-	</section>
-	<!-- / 3カラム -->
+	<!-- コンテンツ -->
+		<section class="content">
+			<h3 class="heading">ハザードマップ</h3>
+			<article>
+				<p class="readmore"><a href="hazardmap.html"><img src="images/sample1.jpg" width="290" height="290" alt="" class="alignright border" /></a></p>
+				<p>店舗のHPが確認できます。</p>
+				<p>このページへジャンプしたあなたはレストランを助けたくなります。</p>
+			</article>
+		</section>
+		<section class="content">
+			<h3 class="heading">スタンプコレクション</h3>
+			<article>
+				<p class="readmore"><a href="stanp.html"><img src="images/sample2.jpg" width="290" height="290" alt="" class="alignright border" /></a></p>
+				<p>あなたが訪れた店舗のスタンプが確認できます。</p>
+				<p>このページへジャンプしたあなたはもっとスタンプを集めたくなります。</p>
+			</article>
+		</section>
+		
+		<section class="content" id="gallery">
+			<h3 class="heading">写真ギャラリー</h3>
+				<article>
+					<figure class="grid"><a href="subpage.html"><img src="images/gallery.jpg" width="190" height="140" alt=""></a></figure>
+					<figure class="grid"><a href="subpage.html"><img src="images/gallery.jpg" width="190" height="140" alt=""></a></figure>
+					<figure class="grid"><a href="subpage.html"><img src="images/gallery.jpg" width="190" height="140" alt=""></a></figure>
+					<figure class="grid"><a href="subpage.html"><img src="images/gallery.jpg" width="190" height="140" alt=""></a></figure>
+					<figure class="grid"><a href="subpage.html"><img src="images/gallery.jpg" width="190" height="140" alt=""></a></figure>
+					<figure class="grid"><a href="subpage.html"><img src="images/gallery.jpg" width="190" height="140" alt=""></a></figure>
+				</article>
+		</section>
+	<!-- / コンテンツ -->
+
+	
+
 </div>
 
-<address>&copy:Copyright 2020 TeamShiawase. All Rights Reserved. </address>
+<address>Copyright(c) 2020 teamshiawase. All Rights Reserved. 
 
 </body>
 </html>
