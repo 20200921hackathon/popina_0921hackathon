@@ -13,42 +13,80 @@
    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-analytics.js"></script>
    <!-- Compiled and minified CSS -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<link rel="stylesheet" href="./css/index.css"/>
 
    <!-- Compiled and minified JavaScript -->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
    <title>popina</title>
   </head>
-   <div class="container">
-      <form class="col s12">
-            <div class="row">
-               <div class="input-field col-md-6">
-                  <input id="mailAddress" type="text" class="validate">
-                  <label for="mailAddress">コメント</label>
-               </div>   
+  <div class="container">
+   <div class="row">
+      <div class="col s12">
+         <h3 class="center-align z-depth-1">本日の結果</h3>
+      </div>
+      <form class="col s6">
+         <h5>
+            男性　大人：
+            <div class="input-field inline">
+               <input id="maleNumber" type="number">
+               <label for="maleNumber">人数</label>
             </div>
-      </form>
-   　<div class="row">
-         <div class="col s12 center">
+         </h5>
+      
+         <h5>
+            女性　大人：
+            <div class="input-field inline">
+               <input id="femaleNumber" type="number">
+               <label for="femalNumber">人数</label>
+            </div>
+         </h5>
+         
+         <h5>
+            　　　子供：
+            <div class="input-field inline">
+               <input id="childNumber" type="number">
+               <label for="childNumber">人数</label>
+            </div>
+         </h5>
+<!--          
+         <h5>
+            　　　合計：
+         </h5> -->
+         <div class="col s6 center">
             <div id="send_button">
-               <a class="waves-effect waves-light btn-large z-depth-4">コメント送信</a>
+               <a class="waves-effect waves-light btn-large z-depth-4">送信</a>
             </div>      
+         </div>
+   
+      </form>
+         
+      <div class="col s6">
+         <div class="result">
+            <img id ="countResult" src="./img/countResult.jpg"/>
          </div>
       </div>
-      <div class="row">
-         <div class="col s12 center">
-            <div id="count_up_button">
-               <a class="waves-effect waves-light btn-large z-depth-4">人が来た</a>
-            </div>      
+      
+      <div class="col s12">
+         <div id="spacer"></div>
+      
+      <div class="col s12">
+         <div class="history">
+            
+            <h3 class="center-align z-depth-1">これまでの記録</h3>
+            <img id ="history" src="./img/history.jpg"/>
          </div>
-      </div>
-      <div class="row">
-         <div class="col s12 center">
-            <div id="logout_button">
-               <a class="waves-effect waves-light btn-large z-depth-4">ログアウト</a>
-            </div>      
-         </div>
+         
       </div>
    </div>
+</div>
+
+<div class="row">
+   <div class="col s12 center">
+      <div id="logout_button">
+         <a class="waves-effect waves-light btn-large z-depth-4">ログアウト</a>
+      </div>      
+   </div>
+</div>
 
    <body>
       <script src="js/send.js"></script>
