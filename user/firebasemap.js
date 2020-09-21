@@ -1,5 +1,6 @@
 let map, infoWindow;
 
+
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 0, lng: 0},
@@ -36,21 +37,8 @@ function initMap() {
       handleLocationError(false, infoWindow, map.getCenter());
     }
 
-    // Create the DIV to hold the control and call the makeInfoBox() constructor
-    // passing in this DIV.
-    var infoBoxDiv = document.createElement('div');
-    infoBoxDiv.id = 'infobox';
-    //var infoBox = new makeInfoBox(infoBoxDiv, map);
-    infoBoxDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(infoBoxDiv);
-
-    loadShopData(infoBoxDiv);
+    loadShopData(map);
 }
-
-
-function putMarker(controlDiv, map) {
-34.746362, 135.792903
-
 
 function makeInfoBox(controlDiv, map) {
     // Set CSS for the control border.
@@ -85,55 +73,72 @@ function deleteShopData(id) {
 }
 
 
-// Template for messages.
-var MESSAGE_TEMPLATE =
-    '<div class="message-container">' +
-      '<div class="spacing"><div class="pic"></div></div>' +
-      '<div class="message"></div>' +
-      '<div class="name"></div>' +
-    '</div>';
-
-function createAndInsertMessage(parentDiv, id) {
-    const container = document.createElement('div');
-    container.innerHTML = MESSAGE_TEMPLATE;
-    const div = container.firstChild;
-    div.setAttribute('id', id);
-  
-    // figure out where to insert new message
-    const existingMessages = parentDiv.children;
-    if (existingMessages.length === 0) {
-        parentDiv.appendChild(div);
-    } else {
-      let messageListNode = existingMessages[0];
-  
-      messageListNode = messageListNode.nextSibling;
-  
-      parentDiv.insertBefore(div, messageListNode);
-    }
-  
-    return div;
-}
-  
 // Displays a ShopData in the UI.
-function displayShopData(infoBoxDiv, id, name, loc, goal) {
-    var div = createAndInsertMessage(infoBoxDiv, id);
+function displayShopData(map, id, name, lat, lng, goal) {
 
-    div.querySelector('.name').textContent = name;
-    var messageElement = div.querySelector('.message');
+  var icon = {
+    size: new google.maps.Size(8, 8),
+    // The origin for this image is (0, 0).
+    origin: new google.maps.Point(0, 0),
+    // The anchor for this image is the base of the flagpole at (0, 32).
+    anchor: new google.maps.Point(0, 32)
+  };
+  var marker = new google.maps.Marker({
+    title: name,
+    position: new google.maps.LatLng(lat, lng),
+    icon: icon,
+    map: map,
+  });
 
-    messageElement.textContent = loc;
-    // Replace all line breaks by <br>.
-    messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
-  
-    // Show the card fading-in and scroll to view the new message.
-    setTimeout(function() {div.classList.add('visible')}, 1);
-    infoBoxDiv.scrollTop = infoBoxDiv.scrollHeight;
+  // add shop info -------
+  var query = firebase.firestore()
+    .collection("shoptoday")
+    .where("店舗ID", "==", id);
 
-    infoBoxDiv.appendChild(div);
+  // Start listening to the query.
+  query.onSnapshot(function(snapshot) {
+    var accum = 0;
+    snapshot.docChanges().forEach(function(change) {
+      var data = change.doc.data();
+      accum += data.来店客数;
+    });
+
+    var contentString = ''+
+      '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h1 id="firstHeading" class="firstHeading">'+name+'</h1>'+
+      '<div id="bodyContent">'+
+      'HP: '+ accum+'/'+ goal;
+    if (accum / goal <0.5) {
+      contentString += '<img src="images/keieiNG.png" width="32" height="32" alt="" class="alignleft border" />'+
+        '<br>お店は体力の限界です．'+
+        '</div>'+
+        '</div>';
+    } else if (accum / goal >= 1) {
+      contentString += '<img src="images/keieiOK.png" width="32" height="32" alt="" class="alignleft border" />'+
+        '<br>お店は元気に営業中！'+
+        '</div>'+
+        '</div>';
+    } else {
+      contentString += '<img src="images/keieiNOMAL.png" width="32" height="32" alt="" class="alignleft border" />'+
+        '<br>お店はなんとかなってます'+
+        '</div>'+
+        '</div>';
+    }
+
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  });
 }
 
 // Loads chat messages history and listens for upcoming ones.
-function loadShopData(infoBoxDiv) {
+function loadShopData(map, ) {
     // TODO 8: Load and listens for new messages.
     // Create the query to load the last 12 messages and listen for new ones.
     var query = firebase.firestore()
@@ -146,7 +151,7 @@ function loadShopData(infoBoxDiv) {
             deleteShopData(change.doc.id);
         } else {
             var data = change.doc.data();
-            displayShopData(infoBoxDiv, change.doc.id, data.店舗名, data.場所, data.必要来店客数);
+            displayShopData(map, data.店舗ID, data.店舗名, data.緯度, data.経度, data.目標来客数);
         }
         });
     });
