@@ -2,11 +2,21 @@
 
 header{
   margin-top: 30px;
-  color: #43A047;
+  color: #333;
 }
+
+body {
+    color:#333;
+    font-size:13px;
+    font-family:verdana,"ヒラギノ丸ゴ ProN W4","Hiragino Maru Gothic ProN","メイリオ","Meiryo","ＭＳ Ｐゴシック","MS PGothic",Sans-Serif;
+    line-height:1.5;
+    -webkit-text-size-adjust: none;
+    background:#f8f2e5;
+}
+
 hr{
   border-width: 3px;
-  border-color: #43A047;
+  border-color: #333;
 }
 h1{
   font-size: 25px;

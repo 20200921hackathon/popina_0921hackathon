@@ -221,7 +221,8 @@ margin:5px auto 15px auto;
 table.table td{
 border-collapse:collapse;
 background-color:#F9F9F9;
-text-align:left;
+/*text-align:left;*/
+text-align: center;
 padding:8px;
 border:1px solid #D6D6D6;
 line-height:20px;
@@ -229,7 +230,8 @@ line-height:20px;
 
 table.table th{
 background-color:#F5F5F5;
-text-align:right;
+/*text-align:right;*/
+text-align: center;
 padding:8px;
 white-space:nowrap;
 color: #151515;
