@@ -1,7 +1,9 @@
+let map, infoWindow;
+
 function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
       center: {lat: 0, lng: 0},
-      zoom: 3,
+      zoom: 10,
       styles: [{
         featureType: 'poi',
         stylers: [{ visibility: 'off' }]  // Turn off points of interest.
@@ -13,6 +15,27 @@ function initMap() {
       streetViewControl: false
     });
 
+    infoWindow = new google.maps.InfoWindow();
+
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          map.setCenter(pos);
+        },
+        () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+
     // Create the DIV to hold the control and call the makeInfoBox() constructor
     // passing in this DIV.
     var infoBoxDiv = document.createElement('div');
@@ -23,6 +46,12 @@ function initMap() {
 
     loadShopData(infoBoxDiv);
 }
+
+
+function putMarker(controlDiv, map) {
+34.746362, 135.792903
+
+
 function makeInfoBox(controlDiv, map) {
     // Set CSS for the control border.
     var controlUI = document.createElement('div');
@@ -64,16 +93,11 @@ var MESSAGE_TEMPLATE =
       '<div class="name"></div>' +
     '</div>';
 
-function createAndInsertMessage(parentDiv, id, timestamp) {
+function createAndInsertMessage(parentDiv, id) {
     const container = document.createElement('div');
     container.innerHTML = MESSAGE_TEMPLATE;
     const div = container.firstChild;
     div.setAttribute('id', id);
-  
-    // If timestamp is null, assume we've gotten a brand new message.
-    // https://stackoverflow.com/a/47781432/4816918
-    timestamp = timestamp ? timestamp.toMillis() : Date.now();
-    div.setAttribute('timestamp', timestamp);
   
     // figure out where to insert new message
     const existingMessages = parentDiv.children;
@@ -82,21 +106,7 @@ function createAndInsertMessage(parentDiv, id, timestamp) {
     } else {
       let messageListNode = existingMessages[0];
   
-      while (messageListNode) {
-        const messageListNodeTime = messageListNode.getAttribute('timestamp');
-  
-        if (!messageListNodeTime) {
-          throw new Error(
-            `Child ${messageListNode.id} has no 'timestamp' attribute`
-          );
-        }
-  
-        if (messageListNodeTime > timestamp) {
-          break;
-        }
-  
-        messageListNode = messageListNode.nextSibling;
-      }
+      messageListNode = messageListNode.nextSibling;
   
       parentDiv.insertBefore(div, messageListNode);
     }
@@ -105,18 +115,16 @@ function createAndInsertMessage(parentDiv, id, timestamp) {
 }
   
 // Displays a ShopData in the UI.
-function displayShopData(infoBoxDiv, id, timestamp, name, text) {
-    var div = createAndInsertMessage(infoBoxDiv, id, timestamp);
+function displayShopData(infoBoxDiv, id, name, loc, goal) {
+    var div = createAndInsertMessage(infoBoxDiv, id);
 
     div.querySelector('.name').textContent = name;
     var messageElement = div.querySelector('.message');
-  
-    if (text) { // If the message is text.
-      messageElement.textContent = text;
-      // Replace all line breaks by <br>.
-      messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
-    }
 
+    messageElement.textContent = loc;
+    // Replace all line breaks by <br>.
+    messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+  
     // Show the card fading-in and scroll to view the new message.
     setTimeout(function() {div.classList.add('visible')}, 1);
     infoBoxDiv.scrollTop = infoBoxDiv.scrollHeight;
@@ -129,9 +137,7 @@ function loadShopData(infoBoxDiv) {
     // TODO 8: Load and listens for new messages.
     // Create the query to load the last 12 messages and listen for new ones.
     var query = firebase.firestore()
-        .collection('messages')
-        .orderBy('timestamp', 'desc')
-        .limit(12);
+        .collection("shop");
 
     // Start listening to the query.
     query.onSnapshot(function(snapshot) {
@@ -140,7 +146,7 @@ function loadShopData(infoBoxDiv) {
             deleteShopData(change.doc.id);
         } else {
             var data = change.doc.data();
-            displayShopData(infoBoxDiv, change.doc.id, data.timestamp, data.name, data.text);
+            displayShopData(infoBoxDiv, change.doc.id, data.店舗名, data.場所, data.必要来店客数);
         }
         });
     });
