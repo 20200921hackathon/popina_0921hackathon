@@ -122,6 +122,48 @@ padding:10px 5px 5px;
 text-align:right;
 }
 
+/**************************
+/* サブグリッド
+**************************/
+.subgridWrapper{
+	padding-bottom:20px;
+	overflow: hidden;
+	}
+	
+	* html .subgridWrapper{height:1%;}
+		
+	.subgrid{
+	float:left;
+	}
+	
+	.subbox{
+	padding:10px;
+	text-align:center;
+	}
+	
+	.subbox img{
+	max-width:100%;
+	height:auto;
+	}
+	
+	.subbox h3{padding:10px 0 5px;}
+	
+	.subbox h3, .box p{text-align:left;}
+	
+	.subbox p.readmore{
+	padding:10px 5px 5px;
+	text-align:right;
+	}
+	
+	.subbox p.readmore a{
+	padding:3px 7px;
+	border-radius:3px;
+	color:#fff;
+	background:#d1ad93;
+	}
+	
+	.subbox p.readmore a:hover{background:#ad8a71;}
+
 
 
 /*************
