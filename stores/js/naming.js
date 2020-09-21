@@ -31,13 +31,16 @@ $("#decide_button").on("click", setting);
 
 function setting () {
 var new_name = String(document.getElementById("new_name").value);
+var goal = document.getElementById("goal").value;
+var latitude = document.getElementById("lat").value;
+var longitude = document.getElementById("lng").value;
+
+
 if(new_name.length == 0) {
       console.log("kake!");
       document.getElementById('result0').textContent = "何か書きなさいな";
    }
 else{
-    var latitude = 0;
-    var longitude = 0;
    var user = firebase.auth().currentUser;
    // var loc =  firebase.firestore.GeoPoint(latitude, longitude)
    user.updateProfile({
@@ -46,7 +49,7 @@ else{
     db.collection("shop").add({
         店舗名:new_name,
         店舗ID:uid,
-       目標来客数:30,
+       目標来客数:goal,
        緯度:latitude,
        経度:longitude
    })
